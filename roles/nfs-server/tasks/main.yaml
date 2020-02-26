@@ -2,3 +2,57 @@
   yum: 
     name: "nfs-utils"
     state: present
+
+- name: Create shared directory
+  file:
+    path: /var/nfs-share
+    state: directory
+    mode: '0755'
+    owner: nfsnobody
+    group: nfsnobody
+
+- name: Enabling Service
+  systemd:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - firewalld
+    - rpcbind
+    - nfs-server
+    - nfs-lock
+    - nfs-idmap
+
+# - name: Check /etc/exports for shared folder
+#   lineinfile:
+#     name: /etc/exports
+#     line: "/var/nfs-share"
+#     state: present
+#   register: check_nfs_shared_folder
+#   check_mode: yes
+#   tags:
+#     - test_nfs
+
+- name: Add shared folder to /etc/exports
+  # when: not check_nfs_shared_folder.found
+  lineinfile:
+    path: /etc/exports
+    line: "/var/nfs-share    *(rw,sync,no_root_squash,no_all_squash)"
+  tags:
+    - test_nfs
+
+- name: Reload NFS
+  command: "exportfs -ar"
+
+- name: Enable firewall for nfs-server
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - nfs
+    - mountd
+    - rpc-bind
+
+- name: Reload firewall configuration
+  command: "firewall-cmd --reload"

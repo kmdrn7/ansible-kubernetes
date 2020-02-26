@@ -25,3 +25,10 @@
     - kubernetes/worker
   tags:
     - kubeworker
+
+- hosts: nfs_server
+  become: true
+  roles:
+    - nfs-server
+  tags:
+    - nfs-server
