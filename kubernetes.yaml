@@ -1,0 +1,27 @@
+##################################################
+# Install Kubenetes Cluster
+# 1 Master 1 Worker
+##################################################
+---
+- hosts: kubernetes_cluster
+  become: true
+  roles:
+    - common
+    - docker
+  tags:
+    - docker
+
+- hosts: master
+  become: true
+  roles:
+    - kubernetes/master
+    - cni/calico
+  tags:
+    - kubemaster
+
+- hosts: worker
+  become: true
+  roles:
+    - kubernetes/worker
+  tags:
+    - kubeworker

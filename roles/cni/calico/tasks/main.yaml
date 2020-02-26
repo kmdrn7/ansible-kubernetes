@@ -1,0 +1,10 @@
+- name: Copy calico cni config
+  template:
+    src: ./files/kubernetes/calico.yaml
+    dest: /opt/yaml/calico.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Apply calico cni
+  command: kubectl apply -f /opt/yaml/calico.yaml
