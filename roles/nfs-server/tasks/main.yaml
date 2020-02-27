@@ -7,9 +7,9 @@
   file:
     path: /var/nfs-share
     state: directory
-    mode: '0755'
     owner: nfsnobody
     group: nfsnobody
+    mode: 0755
 
 - name: Enabling Service
   systemd:
@@ -22,23 +22,13 @@
     - nfs-lock
     - nfs-idmap
 
-# - name: Check /etc/exports for shared folder
-#   lineinfile:
-#     name: /etc/exports
-#     line: "/var/nfs-share"
-#     state: present
-#   register: check_nfs_shared_folder
-#   check_mode: yes
-#   tags:
-#     - test_nfs
-
 - name: Add shared folder to /etc/exports
-  # when: not check_nfs_shared_folder.found
-  lineinfile:
-    path: /etc/exports
-    line: "/var/nfs-share    *(rw,sync,no_root_squash,no_all_squash)"
-  tags:
-    - test_nfs
+  template:
+    src: "exports.j2"
+    dest: "/etc/exports"
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Reload NFS
   command: "exportfs -ar"

@@ -1,0 +1,2 @@
+export_folder_for_sharing:
+  - /var/nfs-share *(rw,sync,no_root_squash,no_all_squash)
