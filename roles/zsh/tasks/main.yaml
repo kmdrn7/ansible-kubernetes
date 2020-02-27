@@ -1,0 +1,10 @@
+- name: Install Zsh
+  yum:
+    name: zsh
+    state: present
+
+- name: Install oh-my-zsh
+  become_user: "{{ zsh_user }}"
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  args:
+    chdir: /home/{{ shz_user }}/
