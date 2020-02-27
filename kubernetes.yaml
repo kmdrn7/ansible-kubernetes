@@ -16,6 +16,8 @@
   roles:
     - kubernetes/master
     - cni/calico
+    - role: helm
+      tags: role-helm
   tags:
     - kubemaster
 
