@@ -23,6 +23,12 @@
   become: true
   roles:
     - kubernetes/worker
+  pre_tasks:
+    - name: Gather facts from kubernetes master
+      setup:
+      delegate_facts: True
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['master'] }}"
   tags:
     - kubeworker
 
