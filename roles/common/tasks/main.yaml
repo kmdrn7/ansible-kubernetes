@@ -26,3 +26,8 @@
     - net.ipv4.ip_forward
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
+
+- name: Install nfs-utils
+  yum:
+    name: nfs-utils
+    state: present
