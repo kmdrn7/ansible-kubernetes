@@ -27,6 +27,12 @@
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
 
+- name: Enable firewall service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
 - name: Install nfs-utils
   yum:
     name: nfs-utils

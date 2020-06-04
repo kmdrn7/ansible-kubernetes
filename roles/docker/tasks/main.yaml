@@ -5,7 +5,7 @@
   include_tasks: deps.yaml
 
 - name: Install Docker Container Engine
-  yum: 
+  yum:
     name: "{{ packages }}"
   vars:
     packages:
