@@ -1,3 +1,9 @@
+- name: Create yaml folder in /opt
+  file:
+    path: /opt/yaml
+    state: directory
+    mode: '0755'
+
 - name: Copy calico cni config
   template:
     src: ./files/kubernetes/calico.yaml
