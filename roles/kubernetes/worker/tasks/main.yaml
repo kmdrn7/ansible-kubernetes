@@ -5,7 +5,7 @@
   include_tasks: deps.yaml
 
 - name: Install Kubelet, Kubeadm, Kubectl
-  yum: 
+  yum:
     name: "{{ packages }}"
   vars:
     packages:
