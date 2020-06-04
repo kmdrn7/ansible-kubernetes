@@ -18,6 +18,8 @@
     - cni/calico
     - role: helm
       tags: role-helm
+    - role: debug
+      tags: role-debug
   tags:
     - kubemaster
 

@@ -1,0 +1,10 @@
+##################################################
+# Configure Common Setting
+##################################################
+
+- name: Setup
+  setup:
+
+- name: Kubernetes master ip address
+  debug:
+    msg: "{{ hostvars[groups['master'][0]]['ansible_eth1'].ipv4.address }}"
