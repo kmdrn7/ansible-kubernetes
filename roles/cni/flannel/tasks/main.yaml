@@ -1,0 +1,16 @@
+- name: Create yaml folder in /opt
+  file:
+    path: /opt/yaml
+    state: directory
+    mode: '0755'
+
+- name: Copy flannel cni config
+  template:
+    src: flannel.yaml.j2
+    dest: /opt/yaml/flannel.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Apply flannel cni
+  command: kubectl apply -f /opt/yaml/flannel.yaml

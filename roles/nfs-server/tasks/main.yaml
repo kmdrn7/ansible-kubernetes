@@ -1,5 +1,5 @@
 - name: Install NFS Utils
-  yum: 
+  yum:
     name: "nfs-utils"
     state: present
 
@@ -11,7 +11,7 @@
     group: nfsnobody
     mode: 0755
 
-- name: Enabling Service
+- name: Starting Service
   systemd:
     name: "{{ item }}"
     state: started
@@ -21,6 +21,15 @@
     - nfs-server
     - nfs-lock
     - nfs-idmap
+
+- name: Enabling Service
+  systemd:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - firewalld
+    - rpcbind
+    - nfs-server
 
 - name: Add shared folder to /etc/exports
   template:

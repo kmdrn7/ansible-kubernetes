@@ -6,7 +6,7 @@
 
 - name: Copy calico cni config
   template:
-    src: ./files/kubernetes/calico.yaml
+    src: calico.yaml.j2
     dest: /opt/yaml/calico.yaml
     owner: root
     group: root

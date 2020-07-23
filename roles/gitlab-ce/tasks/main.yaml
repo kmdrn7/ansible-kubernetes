@@ -1,0 +1,37 @@
+##################################################
+# Install GITLAB Community Edition
+##################################################
+- name: Installing Dependencies
+  include_tasks: deps.yaml
+
+- name: Download Gitlab-CE Repository
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+    dest: /tmp/gitlab-repo.sh
+    mode: u+rwx
+
+- name: Install Gitlab-CE Repository
+  shell: /tmp/gitlab-repo.sh
+
+- name: Install Gitlab-CE
+  yum:
+    name: gitlab-ce
+  environment:
+    EXTERNAL_URL: "https://gitlab.mykloud.lokal"
+
+- name: Enable Firewall
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Disable Let's Encrypt Integration
+  lineinfile:
+    path: /etc/gitlab/gitlab.rb
+    line: letsencrypt['enable'] = false
+
+- name: Reconfigure Gitlab-CE
+  shell: gitlab-ctl reconfigure
+
+- name: Check Gitlab-CE with Rake
+  shell: gitlab-rake gitlab:check

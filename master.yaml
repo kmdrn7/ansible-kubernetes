@@ -3,6 +3,13 @@
 # 1 Master 1 Worker
 ##################################################
 ---
+- hosts: gitlab
+  become: true
+  roles:
+    - gitlab-ce
+  tags:
+    - gitlab
+
 - hosts: kubernetes_cluster
   become: true
   roles:
@@ -18,8 +25,6 @@
     - cni/calico
     - role: helm
       tags: role-helm
-    - role: debug
-      tags: role-debug
   tags:
     - kubemaster
 
