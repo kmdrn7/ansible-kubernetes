@@ -1,0 +1,11 @@
+.:53 {
+    errors
+    forward . 8.8.8.8 9.9.9.9
+}
+
+mykloud.lokal.:53 {
+    pdsql sqlite3 /root/dns.db {
+        debug db
+        auto-migrate
+    }
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=CoreDNS DNS Helper
+Documentation=https://coredns.io
+After=network.target
+
+[Service]
+Restart=always
+User=root
+WorkingDirectory=/root
+ExecStart=/root/helper
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

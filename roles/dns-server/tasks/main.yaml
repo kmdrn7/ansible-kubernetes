@@ -1,0 +1,72 @@
+---
+- name: Download CoreDNS
+  get_url:
+    url: https://github.com/kmdrn7/prebuilt/raw/master/coredns/2-coredns.tar.gz
+    dest: /tmp/coredns.tar.gz
+    mode: u=rw,g=r,o=r
+
+- name: Install CoreDNS
+  unarchive:
+    src: /tmp/coredns.tar.gz
+    dest: /root
+    remote_src: yes
+
+- name: Rename CoreDNS binary
+  command: mv /root/2-coredns /root/coredns
+
+- name: Download CoreDNS Helper
+  get_url:
+    url: https://github.com/kmdrn7/prebuilt/raw/master/coredns-helper/coredns-helper.tar.gz
+    dest: /tmp/helper.tar.gz
+    mode: u=rw,g=r,o=r
+
+- name: Install CoreDNS Helper
+  unarchive:
+    src: /tmp/helper.tar.gz
+    dest: /root
+    remote_src: yes
+
+- name: Rename CoreDNS Helper binary
+  command: mv /root/coredns-helper /root/helper
+
+- name: Configure CoreDNS service
+  template:
+    src: coredns.service.j2
+    dest: /etc/systemd/system/coredns.service
+    mode: u=rw,g=r,o=r
+
+- name: Configure CoreDNS Helper service
+  template:
+    src: coredns-helper.service.j2
+    dest: /etc/systemd/system/coredns-helper.service
+    mode: u=rw,g=r,o=r
+
+- name: Install CoreDNS Corefile
+  template:
+    src: Corefile.j2
+    dest: /root/Corefile
+    mode: u=rw,g=r,o=r
+
+- name: Systemd daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: Starting and enabling coredns + coredns-helper service
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - coredns.service
+    - coredns-helper.service
+
+- name: Configuring firewalld open port
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - 53/tcp
+    - 53/udp
+    - 14045/tcp
