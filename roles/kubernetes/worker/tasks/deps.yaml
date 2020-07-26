@@ -7,3 +7,15 @@
     gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     enabled: yes
     gpgcheck: yes
+
+- name: Add epel-release
+  yum:
+    name: epel-release
+    state: present
+
+- name: Add python-pip and python-openshift
+  yum:
+    name:
+      - python-pip
+      - python-openshift
+    state: present

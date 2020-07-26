@@ -1,8 +1,8 @@
 - name: Download Helm package
   get_url:
-    url: https://get.helm.sh/helm-v3.1.1-linux-amd64.tar.gz
+    url: https://get.helm.sh/helm-v3.3.0-rc.1-linux-amd64.tar.gz
     dest: /opt/helm.tar.gz
-    checksum: sha256:https://get.helm.sh/helm-v3.1.1-linux-amd64.tar.gz.sha256sum
+    checksum: sha256:https://get.helm.sh/helm-v3.3.0-rc.1-linux-amd64.tar.gz.sha256sum
 
 - name: Extract Helm binary
   unarchive:
@@ -10,7 +10,8 @@
     dest: /tmp
     remote_src: yes
 
-- stat:
+- name: Check is helm already exist
+  stat:
     path: /usr/local/bin/helm
   register: is_helm_exists
 

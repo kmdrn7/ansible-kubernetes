@@ -19,7 +19,7 @@
     enabled: yes
     state: started
 
-- name: Enable firewall port 6443 for kubernetes
+- name: Enable firewall port for kubernetes
   firewalld:
     port: "{{ item }}"
     permanent: yes
@@ -51,6 +51,11 @@
   tags:
     - kubeinit
 
+- name: Add KUBELET_EXTRA_ARGS
+  template:
+    src: 10-kubeadm.conf.j2
+    dest: /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+
 - name: Init Kubernetes cluster
   shell: |
     kubeadm init --kubernetes-version {{ kubernetes_version }} \
@@ -58,7 +63,6 @@
                 --pod-network-cidr {{ network_pod_cidr }} \
                 --token {{ kube_master_token }} \
                 --apiserver-advertise-address {{ kube_master_ip }} \
-                --node-ip {{ hostvars[inventory_hostname]['ansible_eth1'].ipv4.address }} \
                 --ignore-preflight-errors all
   when: not kubeadm_ca.stat.exists
   register: init_cluster

@@ -13,4 +13,6 @@
     mode: '0644'
 
 - name: Apply calico cni
-  command: kubectl apply -f /opt/yaml/calico.yaml
+  k8s:
+    state: present
+    src: /opt/yaml/calico.yaml
