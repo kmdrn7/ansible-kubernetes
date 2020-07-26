@@ -1,0 +1,29 @@
+##################################################
+# Configure Common Server Setting
+##################################################
+
+- name: Switch off swap
+  command: swapoff -a
+
+- name: Disable Swap in /etc/fstab
+  mount:
+    name: swap
+    fstype: swap
+    state: absent
+
+- name: Disabled /swap on fstab
+  replace:
+    dest: /etc/fstab
+    regexp: '^/swapfile'
+    replace: '#/swapfile'
+
+- name: Enable firewall service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Install nfs-utils
+  yum:
+    name: nfs-utils
+    state: present

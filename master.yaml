@@ -6,7 +6,7 @@
 - hosts: server
   become: true
   roles:
-    - common
+    - common_server
   tags:
     - server
 
@@ -20,7 +20,7 @@
 - hosts: kubernetes_cluster
   become: true
   roles:
-    - common
+    - common_kubernetes
     - docker
   tags:
     - docker
@@ -33,6 +33,7 @@
     - role: helm
       tags: role-helm
   tags:
+    - kubernetes
     - kubemaster
 
 - hosts: worker
@@ -46,6 +47,7 @@
       delegate_to: "{{ item }}"
       with_items: "{{ groups['master'] }}"
   tags:
+    - kubernetes
     - kubeworker
 
 - hosts: nfs_server
