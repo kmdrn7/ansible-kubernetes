@@ -41,6 +41,7 @@
   shell: |
     kubeadm join {{ kube_master_ip }}:6443 \
           --token {{ kube_master_token }} \
+          --node-ip {{ hostvars[inventory_hostname]['ansible_eth1'].ipv4.address }} \
           --discovery-token-unsafe-skip-ca-verification \
           --ignore-preflight-errors all
   register: init_cluster

@@ -58,6 +58,7 @@
                 --pod-network-cidr {{ network_pod_cidr }} \
                 --token {{ kube_master_token }} \
                 --apiserver-advertise-address {{ kube_master_ip }} \
+                --node-ip {{ hostvars[inventory_hostname]['ansible_eth1'].ipv4.address }} \
                 --ignore-preflight-errors all
   when: not kubeadm_ca.stat.exists
   register: init_cluster
