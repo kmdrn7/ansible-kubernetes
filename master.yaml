@@ -3,12 +3,19 @@
 # 1 Master 1 Worker
 ##################################################
 ---
-- hosts: gitlab
+- hosts: server
   become: true
   roles:
-    - gitlab-ce
+    - common
   tags:
-    - gitlab
+    - server
+
+- hosts: dns_server
+  become: true
+  roles:
+    - dns-server
+  tags:
+    - dns
 
 - hosts: kubernetes_cluster
   become: true
