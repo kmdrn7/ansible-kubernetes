@@ -21,3 +21,9 @@
 
 - name: Test run helm version
   command: helm version
+
+- name: Add chartmuseum.mykloud.lokal helm repo
+  command: helm repo add mykloud http://chartmuseum.mykloud.lokal:8080
+
+- name: Update helm repo
+  command: helm repo update

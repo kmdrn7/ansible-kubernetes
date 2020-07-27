@@ -83,3 +83,11 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Copy .kube/config to local
+  fetch:
+    src: /root/.kube/config
+    dest: ~/.kube/config
+    flat: yes
+  tags:
+    - dmpd
