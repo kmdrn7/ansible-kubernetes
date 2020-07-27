@@ -55,4 +55,4 @@
   roles:
     - nfs-server
   tags:
-    - nfs-server
+    - nfs
