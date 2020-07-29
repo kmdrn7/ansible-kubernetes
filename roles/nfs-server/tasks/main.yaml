@@ -26,6 +26,7 @@
   systemd:
     name: "{{ item }}"
     state: started
+    enabled: true
   loop:
     - firewalld
     - rpcbind

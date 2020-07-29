@@ -60,6 +60,9 @@
     - coredns.service
     - coredns-helper.service
 
+- name: Configuring DNS
+  script: configure-dns.sh
+
 - name: Configuring firewalld open port
   firewalld:
     port: "{{ item }}"
