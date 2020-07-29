@@ -53,8 +53,8 @@
 
 - name: Add KUBELET_EXTRA_ARGS
   template:
-    src: 10-kubeadm.conf.j2
-    dest: /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+    src: kubelet.j2
+    dest: /etc/sysconfig/kubelet
 
 - name: Init Kubernetes cluster
   shell: |
