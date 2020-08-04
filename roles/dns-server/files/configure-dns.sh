@@ -1,3 +1,3 @@
-curl -X POST localhost:14045/domains -d '{"name":"mykloud.lokal", "type":"Native"}'
-curl -X POST localhost:14045/records -d '{"domain_id":"1", "name":"dns.mykloud.lokal", "type":"A", "content":"192.168.10.251", "ttl":"3600", "disabled":"0"}'
-curl -X POST localhost:14045/records -d '{"domain_id":"1", "name":"chartmuseum.mykloud.lokal", "type":"A", "content":"172.17.0.3", "ttl":"3600", "disabled":"0"}'
+curl -H "Content-Type: application/json" -X POST localhost:14045/domains -d '{"name":"mykloud.lokal", "type":"Native"}'
+curl -H "Content-Type: application/json" -X POST localhost:14045/records -d '{"domain_id":"1", "name":"dns.mykloud.lokal", "type":"A", "content":"192.168.10.251", "ttl":"3600", "disabled":"0"}'
+curl -H "Content-Type: application/json" -X POST localhost:14045/records -d '{"domain_id":"1", "name":"chartmuseum.mykloud.lokal", "type":"A", "content":"172.17.0.3", "ttl":"3600", "disabled":"0"}'
