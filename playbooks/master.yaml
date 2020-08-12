@@ -30,8 +30,8 @@
   roles:
     - kubernetes/master
     - cni/calico
-    - role: helm
-      tags: role-helm
+    # - role: helm
+    #   tags: role-helm
   tags:
     - kubernetes
     - kubemaster
@@ -56,3 +56,11 @@
     - nfs-server
   tags:
     - nfs
+
+- hosts: docker
+  become: true
+  roles:
+    - common_server
+    - docker
+  tags:
+    - docker
