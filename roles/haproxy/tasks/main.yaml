@@ -15,10 +15,17 @@
     dest: /etc/haproxy/haproxy.cfg
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
 - name: Start and enable HAProxy service
   systemd:
     name: haproxy
     enabled: yes
     state: started
+
+- name: Configure firewall port 6443 for kubernetes apiserver
+  firewalld:
+    port: "6443/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
