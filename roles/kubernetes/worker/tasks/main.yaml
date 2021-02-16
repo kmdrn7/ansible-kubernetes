@@ -19,7 +19,7 @@
     enabled: yes
     state: started
 
-- name: Enable firewall port 6443 for kubernetes
+- name: Enable firewall port for kubernetes
   firewalld:
     port: "{{ item }}"
     permanent: yes
@@ -36,11 +36,6 @@
   - 4789/udp
   - 5437/tcp
   - 179/tcp
-
-- name: Add KUBELET_EXTRA_ARGS
-  template:
-    src: kubelet.j2
-    dest: /etc/sysconfig/kubelet
 
 - name: Join Kubernetes Cluster
   shell: |

@@ -7,4 +7,4 @@
 
 - name: Kubernetes master ip address
   debug:
-    msg: "{{ hostvars[inventory_hostname]['ansible_eth1'].ipv4.address }}"
+    msg: "{{ inventory_hostname }}"

@@ -1,1 +1,1 @@
-KUBELET_EXTRA_ARGS=--node-ip={{ hostvars[inventory_hostname]['ansible_eth1'].ipv4.address }}
+KUBELET_EXTRA_ARGS=--node-ip={{ hostvars[inventory_hostname]['ansible_eth0'].ipv4.address }}

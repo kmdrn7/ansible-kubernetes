@@ -1,8 +1,8 @@
 - name: Download Helm package
   get_url:
-    url: https://get.helm.sh/helm-v3.3.0-rc.1-linux-amd64.tar.gz
+    url: https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz
     dest: /opt/helm.tar.gz
-    checksum: sha256:https://get.helm.sh/helm-v3.3.0-rc.1-linux-amd64.tar.gz.sha256sum
+    checksum: sha256:https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz.sha256sum
 
 - name: Extract Helm binary
   unarchive:
@@ -21,9 +21,3 @@
 
 - name: Test run helm version
   command: helm version
-
-- name: Add chartmuseum.mykloud.lokal helm repo
-  command: helm repo add mykloud http://chartmuseum.mykloud.lokal:8080
-
-- name: Update helm repo
-  command: helm repo update

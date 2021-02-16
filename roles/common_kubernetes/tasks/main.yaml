@@ -1,21 +1,6 @@
 ##################################################
-# Configure Common Server Setting
+# Configure Common Kubernetes Server Setting
 ##################################################
-
-- name: Switch off swap
-  command: swapoff -a
-
-- name: Disable Swap in /etc/fstab
-  mount:
-    name: swap
-    fstype: swap
-    state: absent
-
-- name: Disabled /swap on fstab
-  replace:
-    dest: /etc/fstab
-    regexp: '^/swapfile'
-    replace: '#/swapfile'
 
 - name: Add br_netfilter module
   modprobe:
@@ -34,21 +19,8 @@
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
 
-- name: Check route to docker network on 172.17.0.0/24
-  shell: ip route list | grep 172.17.0.0/24 | cat
-  register: docker_route_check
-
-- name: Add route to docker network on 172.17.0.0/24
-  command: ip route add 172.17.0.0/24 via 192.168.10.1 dev eth1
-  when: not docker_route_check.stdout
-
 - name: Enable firewall service
   systemd:
     name: firewalld
     state: started
     enabled: yes
-
-- name: Install nfs-utils
-  yum:
-    name: nfs-utils
-    state: present
