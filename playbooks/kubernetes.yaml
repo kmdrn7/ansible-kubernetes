@@ -1,0 +1,39 @@
+- hosts: kubernetes_cluster
+  become: true
+  roles:
+    - common_server
+    - common_kubernetes
+    - docker
+
+- hosts: master
+  become: true
+  serial: 1
+  roles:
+    - kubernetes/master
+    - role: cni/calico
+      tags: kubecali
+    - role: helm
+      tags: kubehelm
+  pre_tasks:
+    - name: Gather facts from kubernetes loadbalancer
+      setup:
+      delegate_facts: True
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['haproxy'] }}"
+  tags:
+    - kubernetes
+    - kubemaster
+
+- hosts: worker
+  become: true
+  roles:
+    - kubernetes/worker
+  pre_tasks:
+    - name: Gather facts from kubernetes master
+      setup:
+      delegate_facts: True
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['haproxy'] }}"
+  tags:
+    - kubernetes
+    - kubeworker
