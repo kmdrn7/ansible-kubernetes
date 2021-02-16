@@ -4,6 +4,8 @@
     - common_server
     - common_kubernetes
     - docker
+  tags:
+    - kubebase
 
 - hosts: master
   become: true
@@ -14,6 +16,8 @@
       tags: kubecali
     - role: helm
       tags: kubehelm
+    - role: kubernetes/get_join_info
+      tags: getjoininfo
   pre_tasks:
     - name: Gather facts from kubernetes loadbalancer
       setup:
@@ -21,19 +25,18 @@
       delegate_to: "{{ item }}"
       with_items: "{{ groups['haproxy'] }}"
   tags:
-    - kubernetes
     - kubemaster
+
+- hosts: master_worker
+  become: true
+  roles:
+    - kubernetes/master_worker
+  tags:
+    - kubemasterworker
 
 - hosts: worker
   become: true
   roles:
     - kubernetes/worker
-  pre_tasks:
-    - name: Gather facts from kubernetes master
-      setup:
-      delegate_facts: True
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['haproxy'] }}"
   tags:
-    - kubernetes
     - kubeworker

@@ -9,11 +9,9 @@ haproxy_frontend:
 haproxy_backend:
   - |
     backend apiserver
-      option httpchk GET /healthz
-      http-check expect status 200
       mode tcp
       option ssl-hello-chk
       balance roundrobin
-      server master1 10.146.0.8:6443 check fall 3 rise 2
-      server master2 10.146.0.9:6443 check fall 3 rise 2
-      server master3 10.146.0.7:6443 check fall 3 rise 2
+      server master1 10.146.0.11:6443 check fall 3 rise 2
+      server master2 10.146.0.12:6443 check fall 3 rise 2
+      server master3 10.146.0.13:6443 check fall 3 rise 2

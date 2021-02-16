@@ -1,0 +1,76 @@
+##################################################
+# Install Kubenetes Master
+##################################################
+- name: Prepare dependencies
+  include_tasks: deps.yaml
+
+- name: Install Kubelet, Kubeadm, Kubectl
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+
+- name: Enable and Run Kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+
+- name: Enable firewall port for kubernetes
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - 6443/tcp
+    - 10250/tcp
+    - 10251/tcp
+    - 10252/tcp
+    - 10255/tcp
+    - 2379/tcp
+    - 2380/tcp
+    - 4789/udp
+    - 5437/tcp
+    - 179/tcp
+
+- name: Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/pki/ca.key"
+  register: kubeadm_ca
+  tags:
+    - kubeinit
+
+- name: Join Kubernetes Control Plane
+  shell: |
+    {{ hostvars['master_worker_host']['master_join_command'] }} \
+    --control-plane \
+    --ignore-preflight-errors all
+  when: not kubeadm_ca.stat.exists
+  register: init_cluster
+  tags:
+    - kubeinit
+
+- name: Create a directory .kube
+  file:
+    path: ~/.kube
+    state: directory
+    mode: '0755'
+
+- name: Copy kubeconfig
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/config
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy .kube/config to local
+  fetch:
+    src: /root/.kube/config
+    dest: ~/.kube/config
+    flat: yes

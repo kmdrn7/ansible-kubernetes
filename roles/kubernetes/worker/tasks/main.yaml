@@ -39,8 +39,6 @@
 
 - name: Join Kubernetes Cluster
   shell: |
-    kubeadm join {{ kube_master_ip }}:6443 \
-          --token {{ kube_master_token }} \
-          --discovery-token-unsafe-skip-ca-verification \
-          --ignore-preflight-errors all
+    {{ hostvars['master_worker_host']['master_join_command'] }} \
+    --ignore-preflight-errors all
   register: init_cluster

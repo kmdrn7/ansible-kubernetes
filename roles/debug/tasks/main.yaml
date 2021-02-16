@@ -7,4 +7,4 @@
 
 - name: Kubernetes master ip address
   debug:
-    msg: "{{ inventory_hostname }}"
+    msg: "{{ hostvars['master_worker_host']['master_join_command'] }}"

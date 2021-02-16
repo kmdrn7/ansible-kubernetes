@@ -60,7 +60,7 @@
                 --control-plane-endpoint {{ kube_lb_internal }} \
                 --apiserver-cert-extra-sans {{ inventory_hostname }},{{ kube_lb_internal }},{{ kube_lb_ip }},kubernetes.andikaahmad.com \
                 --upload-certs \
-                --ignore-preflight-errors all
+                --ignore-preflight-errors all >> /root/cluster.txt
   when: not kubeadm_ca.stat.exists
   register: init_cluster
   tags:
@@ -86,5 +86,3 @@
     src: /root/.kube/config
     dest: ~/.kube/config
     flat: yes
-  tags:
-    - dmpd
