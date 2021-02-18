@@ -1,0 +1,6 @@
+- hosts: tools
+  become: true
+  roles:
+    - common_server
+    - docker
+    - chartmuseum
