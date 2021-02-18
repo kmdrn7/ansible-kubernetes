@@ -1,0 +1,9 @@
+---
+- name: Make persistent charts directory in /var/chartmuseum/charts
+  file:
+    path: /var/chartmuseum/charts
+    state: directory
+    mode: '0755'
+
+- name: Run chartmuseum
+  shell: docker run --name chartmuseum -u 0 -d -v /var/chartmuseum/charts:/charts --restart always -p 8088:8080 -e DEBUG=true -e STORAGE=local -e STORAGE_LOCAL_ROOTDIR=/charts chartmuseum/chartmuseum:latest
