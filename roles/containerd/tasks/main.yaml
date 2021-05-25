@@ -1,0 +1,38 @@
+##################################################
+# Install Docker
+##################################################
+
+- name: Install Device Mapper & LVM2
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - device-mapper-persistent-data
+      - lvm2
+
+- name: Add Docker Repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install Containerd Container Runtime Engine
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - containerd.io
+
+- name: Enable and Run Containerd
+  systemd:
+    name: containerd
+    enabled: yes
+    state: started
+
+- name: Setting sebool container_manage_cgroup
+  seboolean:
+    name: container_manage_cgroup
+    state: yes
+    persistent: yes
+  tags:
+    - setsebool

@@ -12,10 +12,3 @@
   yum:
     name: epel-release
     state: present
-
-- name: Add python-pip and python-openshift
-  yum:
-    name:
-      - python-pip
-      - python-openshift
-    state: present

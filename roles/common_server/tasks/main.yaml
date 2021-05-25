@@ -5,7 +5,7 @@
 - name: Switch off swap
   command: swapoff -a
 
-- name: Disable Swap in /etc/fstab
+- name: Disable Swap
   mount:
     name: swap
     fstype: swap
@@ -16,12 +16,6 @@
     dest: /etc/fstab
     regexp: '^/swapfile'
     replace: '#/swapfile'
-
-- name: Enable firewall service
-  systemd:
-    name: firewalld
-    state: started
-    enabled: yes
 
 - name: Install nfs-utils
   yum:

@@ -14,6 +14,13 @@
       - docker-ce-cli-{{ docker_version }}.*
       - containerd.io
 
+- name: Change cgroup to Systemd
+  include_tasks: systemd-cgroup.yaml
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
 - name: Enable and Run Docker
   systemd:
     name: docker

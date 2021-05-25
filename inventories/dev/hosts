@@ -1,5 +1,24 @@
 [haproxy]
 192.168.10.252
 
+[master]
+192.168.10.21
+192.168.10.22
+
+[worker]
+
+[jenkins]
+192.168.10.51
+192.168.10.52
+192.168.10.53
+
+[docker]
+192.168.10.52
+192.168.10.53
+
+[kubernetes_cluster:children]
+master
+worker
+
 [server:children]
 haproxy
